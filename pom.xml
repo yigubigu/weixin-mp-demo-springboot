@@ -45,13 +45,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
-		
-<dependency>
-    <groupId>org.codehaus.plexus</groupId>
-    <artifactId>plexus-classworlds</artifactId>
-    <version>2.5.2</version>
-</dependency>
-
+	
 
 	</dependencies>
 
@@ -60,6 +54,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
