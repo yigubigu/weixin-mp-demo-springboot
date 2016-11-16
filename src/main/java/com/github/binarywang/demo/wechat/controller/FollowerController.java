@@ -41,20 +41,9 @@ public class FollowerController {
 		return new ResponseWrapper();
 	}
 	
-	@RequestMapping(value="batchAssignTag", method=RequestMethod.POST)
-	@ResponseBody()
-	public ResponseWrapper batchAssginTagToUsers(@RequestBody Map<String, Object> params) {
-		String tag = (String)params.get("tags");
-		List<String> userIds = (List<String>) params.get("userIds");
-		try {
-			WxUserTag  userTag = this.wxService.getUserTagService().tagCreate(tag);
-			this.wxService.getUserTagService().batchTagging(userTag.getId(), userIds.toArray(new String[0]));
-			
-		} catch (WxErrorException e) {
-			logger.error(e.getMessage());
-		}
-		return new ResponseWrapper();
-	}
+	
+	
+	
 	
 	@RequestMapping(value = "{follwerId}", method = RequestMethod.GET)
     @ResponseBody
@@ -69,18 +58,6 @@ public class FollowerController {
 		return new ResponseWrapper();
 	}
 	
-	@RequestMapping(value = "{tags}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseWrapper getTags( ) {
-		try {
-			List<WxUserTag> userTag = this.wxService.getUserTagService().tagGet();
-			return new ResponseWrapper(userTag);
-		} catch (WxErrorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new ResponseWrapper();
-	}
 	
     
 }

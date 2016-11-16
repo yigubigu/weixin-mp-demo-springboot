@@ -51,6 +51,43 @@ public class TagController {
 	}
 	
 	
-	
 
+	@RequestMapping(value="assignToUsers", method=RequestMethod.POST)
+	@ResponseBody()
+	public ResponseWrapper batchAssginTagToUsers(@RequestBody Map<String, Object> params) {
+		String tag = (String)params.get("tags");
+		List<String> userIds = (List<String>) params.get("userIds");
+		try {
+			
+			List<WxUserTag>  userTags = this.wxService.getUserTagService().tagGet();
+			WxUserTag userTag = null;
+			
+			for(int i=0; i < userTags.size(); i++) {
+				WxUserTag tmp = userTags.get(i);
+				if (tmp.getName().equalsIgnoreCase(tag)) {
+					userTag = tmp;
+					break;
+				}
+			}
+			
+			if (userTag == null) {
+				userTag = this.wxService.getUserTagService().tagCreate(tag);
+			}			
+			
+			printArray( userIds.toArray(new String[0]));
+			
+			this.wxService.getUserTagService().batchTagging(userTag.getId(), userIds.toArray(new String[0]));
+			
+		} catch (WxErrorException e) {
+			logger.error(e.getMessage());
+		}
+		return new ResponseWrapper();
+	}
+
+	private void printArray(String[] userIds) {
+		
+		for(int i=0; i< userIds.length; i++) {
+			logger.debug(" userid " + userIds[i]);
+		}
+	}
 }
