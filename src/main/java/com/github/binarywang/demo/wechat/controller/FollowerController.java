@@ -5,11 +5,13 @@ import java.util.Map;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,6 +47,19 @@ public class FollowerController {
 		List<String> userIds = (List<String>) params.get("userIds");
 		try {
 			this.wxService.getUserService().userUpdateRemark(userIds.get(0), tag);
+		} catch (WxErrorException e) {
+			logger.error(e.getMessage());
+		}
+		return new ResponseWrapper();
+	}
+	
+	@RequestMapping(value = "{follwerId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseWrapper getUserById(@PathVariable String follwerId ) {
+		
+		try {
+			WxMpUser user = this.wxService.getUserService().userInfo(follwerId);
+			return new ResponseWrapper(user);
 		} catch (WxErrorException e) {
 			logger.error(e.getMessage());
 		}
