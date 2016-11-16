@@ -68,5 +68,19 @@ public class FollowerController {
 		}
 		return new ResponseWrapper();
 	}
+	
+	@RequestMapping(value = "{tags}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseWrapper getTags( ) {
+		try {
+			List<WxUserTag> userTag = this.wxService.getUserTagService().tagGet();
+			return new ResponseWrapper(userTag);
+		} catch (WxErrorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ResponseWrapper();
+	}
+	
     
 }
