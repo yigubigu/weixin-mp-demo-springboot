@@ -10,6 +10,7 @@ import me.chanjar.weixin.mp.bean.tag.WxUserTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,5 +90,20 @@ public class TagController {
 		for(int i=0; i< userIds.length; i++) {
 			logger.debug(" userid " + userIds[i]);
 		}
+	}
+	
+	@RequestMapping(value="{tagId}/assignToUsers", method=RequestMethod.POST)
+	@ResponseBody()
+	public ResponseWrapper assginToUsers(@PathVariable long tagId, @RequestBody Map<String, Object> params) {
+		
+		List<String> userIds = (List<String>) params.get("userIds");
+		try {										
+			printArray( userIds.toArray(new String[0]));			
+			this.wxService.getUserTagService().batchTagging(tagId, userIds.toArray(new String[0]));
+			
+		} catch (WxErrorException e) {
+			logger.error(e.getMessage());
+		}
+		return new ResponseWrapper();
 	}
 }
