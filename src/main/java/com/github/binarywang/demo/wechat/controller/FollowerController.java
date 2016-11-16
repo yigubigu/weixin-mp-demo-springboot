@@ -7,6 +7,7 @@ import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.mp.api.WxMpService;
 import me.chanjar.weixin.mp.bean.result.WxMpUser;
 import me.chanjar.weixin.mp.bean.result.WxMpUserList;
+import me.chanjar.weixin.mp.bean.tag.WxUserTag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,9 @@ public class FollowerController {
 		String tag = (String)params.get("tags");
 		List<String> userIds = (List<String>) params.get("userIds");
 		try {
-			this.wxService.getUserService().userUpdateRemark(userIds.get(0), tag);
+			WxUserTag  userTag = this.wxService.getUserTagService().tagCreate(tag);
+			this.wxService.getUserTagService().batchTagging(userTag.getId(), userIds.toArray(new String[0]));
+			
 		} catch (WxErrorException e) {
 			logger.error(e.getMessage());
 		}
